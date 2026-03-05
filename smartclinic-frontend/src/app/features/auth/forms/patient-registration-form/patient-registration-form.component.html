@@ -1,0 +1,64 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>First Name</mat-label>
+    <input matInput formControlName="first_name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Last Name</mat-label>
+    <input matInput formControlName="last_name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>DOB</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dob" />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      @for (g of genders; track g) {
+        <mat-option [value]="g">{{ g }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="phone" type="tel" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Address</mat-label>
+    <input matInput formControlName="address" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Blood Type</mat-label>
+    <mat-select formControlName="blood_type">
+      @for (b of bloodTypes; track b) {
+        <mat-option [value]="b">{{ b }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" class="submit-btn">
+    Register
+  </button>
+
+  <p class="signin-link">
+    Already a member? <a routerLink="/login">Sign in</a>
+  </p>
+</form>

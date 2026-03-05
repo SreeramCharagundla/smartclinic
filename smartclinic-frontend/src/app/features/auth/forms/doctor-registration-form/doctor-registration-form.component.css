@@ -1,0 +1,26 @@
+.full-width {
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.submit-btn {
+  margin-top: 16px;
+}
+
+.signin-link {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.signin-link a {
+  color: var(--mat-primary-color, #1976d2);
+}

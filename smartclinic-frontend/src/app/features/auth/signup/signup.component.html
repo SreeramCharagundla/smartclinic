@@ -1,0 +1,20 @@
+<div class="signup-container">
+  <mat-card class="signup-card">
+    <mat-card-header>
+      <mat-card-title>Register as</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-radio-group [formControl]="role" class="role-group">
+        <mat-radio-button value="patient">Patient</mat-radio-button>
+        <mat-radio-button value="doctor">Doctor</mat-radio-button>
+      </mat-radio-group>
+
+      @if (role.value === 'patient') {
+        <app-patient-registration-form (formSubmit)="onPatientSubmit($event)" />
+      }
+      @if (role.value === 'doctor') {
+        <app-doctor-registration-form (formSubmit)="onDoctorSubmit($event)" />
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

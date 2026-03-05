@@ -1,0 +1,11 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+button + button {
+  margin-left: 8px;
+}
