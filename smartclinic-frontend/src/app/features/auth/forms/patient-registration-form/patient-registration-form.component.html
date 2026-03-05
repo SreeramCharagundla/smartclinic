@@ -2,11 +2,17 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>First Name</mat-label>
     <input matInput formControlName="first_name" />
+    @if (form.get('first_name')?.hasError('required') && form.get('first_name')?.touched) {
+      <mat-error>First name is required</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Last Name</mat-label>
     <input matInput formControlName="last_name" />
+    @if (form.get('last_name')?.hasError('required') && form.get('last_name')?.touched) {
+      <mat-error>Last name is required</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -14,6 +20,9 @@
     <input matInput [matDatepicker]="picker" formControlName="dob" />
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+    @if (form.get('dob')?.hasError('required') && form.get('dob')?.touched) {
+      <mat-error>Date of birth is required</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -23,16 +32,28 @@
         <mat-option [value]="g">{{ g }}</mat-option>
       }
     </mat-select>
+    @if (form.get('gender')?.hasError('required') && form.get('gender')?.touched) {
+      <mat-error>Gender is required</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Phone</mat-label>
     <input matInput formControlName="phone" type="tel" />
+    @if (form.get('phone')?.hasError('required') && form.get('phone')?.touched) {
+      <mat-error>Phone is required</mat-error>
+    }
+    @if (form.get('phone')?.hasError('pattern') && form.get('phone')?.touched) {
+      <mat-error>Enter a valid phone number (10–20 digits)</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Address</mat-label>
     <input matInput formControlName="address" />
+    @if (form.get('address')?.hasError('required') && form.get('address')?.touched) {
+      <mat-error>Address is required</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
@@ -42,16 +63,31 @@
         <mat-option [value]="b">{{ b }}</mat-option>
       }
     </mat-select>
+    @if (form.get('blood_type')?.hasError('required') && form.get('blood_type')?.touched) {
+      <mat-error>Blood type is required</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Email</mat-label>
     <input matInput formControlName="email" type="email" />
+    @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+      <mat-error>Email is required</mat-error>
+    }
+    @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+      <mat-error>Enter a valid email address</mat-error>
+    }
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Password</mat-label>
     <input matInput formControlName="password" type="password" />
+    @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+      <mat-error>Password is required</mat-error>
+    }
+    @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+      <mat-error>Password must be at least {{ passwordMinLength }} characters</mat-error>
+    }
   </mat-form-field>
 
   <button mat-raised-button color="primary" type="submit" class="submit-btn">
