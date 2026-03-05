@@ -1,23 +1,49 @@
-# macOS
+############################
+# OS
+############################
 .DS_Store
+Thumbs.db
 
-# Angular
-smartclinic-frontend/node_modules
-smartclinic-frontend/dist
-smartclinic-frontend/.angular
-smartclinic-frontend/.cache
-
-# Logs
+############################
+# Angular / Node
+############################
+smartclinic-frontend/node_modules/
+smartclinic-frontend/dist/
+smartclinic-frontend/.angular/
+smartclinic-frontend/.cache/
 npm-debug.log*
 yarn-debug.log*
 
-# Java / Spring
-smartclinic-backend/target
+############################
+# Spring Boot / Java
+############################
+smartclinic-backend/target/
 smartclinic-backend/*.log
 
-# IDE
-.idea
-.vscode
+############################
+# IDE (STS / Eclipse / IntelliJ / VSCode)
+############################
+.project
+.classpath
+.settings/
+.metadata/
+.vscode/
+.idea/
 
+############################
 # Environment
+############################
 .env
+*.env
+.env.*
+
+############################
+# Mac junk
+############################
+.DS_Store
+
+############################
+# Logs
+############################
+logs/
+*.log
