@@ -39,7 +39,7 @@
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Phone</mat-label>
-    <input matInput formControlName="phone" type="tel" />
+    <input matInput formControlName="phone" type="tel" placeholder="e.g. +1 202 555 1234" />
     @if (form.get('phone')?.hasError('required') && form.get('phone')?.touched) {
       <mat-error>Phone is required</mat-error>
     }

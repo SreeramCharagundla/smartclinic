@@ -2,8 +2,8 @@ import { Component, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../../shared/material/material.module';
 import { RouterLink } from '@angular/router';
-import { PHONE_PATTERN } from '../../../../core/validators/validation-patterns';
 import { RegisterDoctorPayload } from '../../../../core/services/auth.service';
+import { PHONE_PATTERN } from '../../../../core/validators/validation-patterns';
 
 const PASSWORD_MIN_LENGTH = 6;
 
