@@ -1,0 +1,113 @@
+<ng-container *ngIf="patient as currentPatient; else notFound">
+  <mat-card>
+    <mat-card-title>{{ currentPatient.firstName }} {{ currentPatient.lastName }}</mat-card-title>
+    <mat-card-content>
+      <p>DOB: {{ currentPatient.dob | date: 'MMM d, y' }}</p>
+      <p>Age: {{ getAge(currentPatient.dob) }}</p>
+      <p>Gender: {{ currentPatient.gender }}</p>
+      <p>Phone: {{ currentPatient.phone }}</p>
+      <p>Blood Type: {{ currentPatient.bloodType }}</p>
+      <p>Address: {{ currentPatient.address }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <h2>Prescriptions</h2>
+  <table mat-table [dataSource]="prescriptionsDataSource" class="full-width-table">
+    <ng-container matColumnDef="medication">
+      <th mat-header-cell *matHeaderCellDef>Medication</th>
+      <td mat-cell *matCellDef="let row">{{ row.medication }}</td>
+    </ng-container>
+    <ng-container matColumnDef="dosage">
+      <th mat-header-cell *matHeaderCellDef>Dosage</th>
+      <td mat-cell *matCellDef="let row">{{ row.dosage }}</td>
+    </ng-container>
+    <ng-container matColumnDef="frequency">
+      <th mat-header-cell *matHeaderCellDef>Frequency</th>
+      <td mat-cell *matCellDef="let row">{{ row.frequency }}</td>
+    </ng-container>
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef>Start Date</th>
+      <td mat-cell *matCellDef="let row">{{ row.startDate }}</td>
+    </ng-container>
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef>End Date</th>
+      <td mat-cell *matCellDef="let row">{{ row.endDate }}</td>
+    </ng-container>
+    <ng-container matColumnDef="instructions">
+      <th mat-header-cell *matHeaderCellDef>Instructions</th>
+      <td mat-cell *matCellDef="let row">{{ row.instructions }}</td>
+    </ng-container>
+    <ng-container matColumnDef="doctor">
+      <th mat-header-cell *matHeaderCellDef>Doctor</th>
+      <td mat-cell *matCellDef="let row">{{ row.doctor }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="prescriptionColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: prescriptionColumns"></tr>
+  </table>
+
+  <h2>Vitals</h2>
+  <table mat-table [dataSource]="vitalsDataSource" class="full-width-table">
+    <ng-container matColumnDef="recordedAt">
+      <th mat-header-cell *matHeaderCellDef>Recorded At</th>
+      <td mat-cell *matCellDef="let row">{{ row.recordedAt }}</td>
+    </ng-container>
+    <ng-container matColumnDef="heartRate">
+      <th mat-header-cell *matHeaderCellDef>Heart Rate</th>
+      <td mat-cell *matCellDef="let row">{{ row.heartRate }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bloodPressure">
+      <th mat-header-cell *matHeaderCellDef>Blood Pressure</th>
+      <td mat-cell *matCellDef="let row">{{ row.systolic }} / {{ row.diastolic }}</td>
+    </ng-container>
+    <ng-container matColumnDef="temperature">
+      <th mat-header-cell *matHeaderCellDef>Temperature</th>
+      <td mat-cell *matCellDef="let row">{{ row.temperature }}</td>
+    </ng-container>
+    <ng-container matColumnDef="oxygenSaturation">
+      <th mat-header-cell *matHeaderCellDef>Oxygen Saturation</th>
+      <td mat-cell *matCellDef="let row">{{ row.oxygenSaturation }}</td>
+    </ng-container>
+    <ng-container matColumnDef="weight">
+      <th mat-header-cell *matHeaderCellDef>Weight</th>
+      <td mat-cell *matCellDef="let row">{{ row.weight }}</td>
+    </ng-container>
+    <ng-container matColumnDef="height">
+      <th mat-header-cell *matHeaderCellDef>Height</th>
+      <td mat-cell *matCellDef="let row">{{ row.height }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="vitalColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: vitalColumns"></tr>
+  </table>
+
+  <h2>Vaccinations</h2>
+  <table mat-table [dataSource]="vaccinationsDataSource" class="full-width-table">
+    <ng-container matColumnDef="vaccine">
+      <th mat-header-cell *matHeaderCellDef>Vaccine</th>
+      <td mat-cell *matCellDef="let row">{{ row.vaccine }}</td>
+    </ng-container>
+    <ng-container matColumnDef="doseNumber">
+      <th mat-header-cell *matHeaderCellDef>Dose Number</th>
+      <td mat-cell *matCellDef="let row">{{ row.doseNumber }}</td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let row">{{ row.date }}</td>
+    </ng-container>
+    <ng-container matColumnDef="provider">
+      <th mat-header-cell *matHeaderCellDef>Provider</th>
+      <td mat-cell *matCellDef="let row">{{ row.provider }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="vaccinationColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: vaccinationColumns"></tr>
+  </table>
+</ng-container>
+
+<ng-template #notFound>
+  <mat-card>
+    <mat-card-title>Patient Not Found</mat-card-title>
+    <mat-card-content>No patient exists for this ID.</mat-card-content>
+  </mat-card>
+</ng-template>

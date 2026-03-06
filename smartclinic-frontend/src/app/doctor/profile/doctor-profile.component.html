@@ -1,0 +1,11 @@
+<mat-card *ngIf="doctor$ | async as doctor">
+  <mat-card-title>Doctor Profile</mat-card-title>
+  <mat-card-content>
+    <p>First Name: {{ doctor.firstName }}</p>
+    <p>Last Name: {{ doctor.lastName }}</p>
+    <p>Specialty: {{ doctor.specialty }}</p>
+    <p>License Number: {{ doctor.licenseNumber }}</p>
+    <p>Clinic Address: {{ doctor.clinicAddress }}</p>
+    <p>Phone: {{ doctor.phone }}</p>
+  </mat-card-content>
+</mat-card>

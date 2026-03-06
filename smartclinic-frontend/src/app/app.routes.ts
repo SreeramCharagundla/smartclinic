@@ -23,5 +23,50 @@ export const routes: Routes = [
         (m) => m.LoginComponent,
       ),
   },
+  {
+    path: 'doctor',
+    loadComponent: () =>
+      import('./doctor/doctor-layout/doctor-layout.component').then(
+        (m) => m.DoctorLayoutComponent,
+      ),
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./doctor/doctor-dashboard/doctor-dashboard.component').then(
+            (m) => m.DoctorDashboardComponent,
+          ),
+      },
+      {
+        path: 'appointments',
+        loadComponent: () =>
+          import('./doctor/appointments/appointments.component').then(
+            (m) => m.AppointmentsComponent,
+          ),
+      },
+      {
+        path: 'patients',
+        loadComponent: () =>
+          import('./doctor/patient-search/patient-search.component').then(
+            (m) => m.PatientSearchComponent,
+          ),
+      },
+      {
+        path: 'patients/:patientId',
+        loadComponent: () =>
+          import('./doctor/patient-profile/patient-profile.component').then(
+            (m) => m.PatientProfileComponent,
+          ),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./doctor/profile/doctor-profile.component').then(
+            (m) => m.DoctorProfileComponent,
+          ),
+      },
+    ],
+  },
   { path: '**', redirectTo: '' },
 ];

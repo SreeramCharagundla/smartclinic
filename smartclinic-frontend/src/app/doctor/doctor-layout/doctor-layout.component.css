@@ -1,0 +1,25 @@
+.layout-container {
+  height: calc(100vh - 64px);
+}
+
+.content-wrapper {
+  padding: 16px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.doctor-name {
+  margin-right: 8px;
+}
+
+.active-link {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 599px) {
+  .layout-container {
+    height: calc(100vh - 56px);
+  }
+}

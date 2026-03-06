@@ -1,8 +1,11 @@
 package com.smartclinic.service;
 
+import com.smartclinic.dto.DoctorDto;
 import com.smartclinic.dto.RegisterDoctorRequest;
 import com.smartclinic.entity.Doctor;
+import com.smartclinic.exception.ResourceNotFoundException;
 import com.smartclinic.repository.DoctorRepository;
+import com.smartclinic.security.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +31,31 @@ public class DoctorService {
                 .phone(data.getPhone())
                 .build();
         return doctorRepository.save(doctor);
+    }
+
+    @Transactional(readOnly = true)
+    public DoctorDto getCurrentDoctor(AuthenticatedUser authenticatedUser) {
+        return doctorRepository.findByUserEmail(authenticatedUser.getEmail())
+                .map(this::toDoctorDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor profile not found for current user"));
+    }
+
+    @Transactional(readOnly = true)
+    public DoctorDto getDoctorById(UUID doctorId) {
+        return doctorRepository.findById(doctorId)
+                .map(this::toDoctorDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found: " + doctorId));
+    }
+
+    private DoctorDto toDoctorDto(Doctor doctor) {
+        return new DoctorDto(
+                doctor.getId(),
+                doctor.getFirstName(),
+                doctor.getLastName(),
+                doctor.getSpecialty(),
+                doctor.getLicenseNumber(),
+                doctor.getClinicAddress(),
+                doctor.getPhone()
+        );
     }
 }

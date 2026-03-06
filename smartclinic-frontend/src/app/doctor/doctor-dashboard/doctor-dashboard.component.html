@@ -1,0 +1,8 @@
+<mat-card>
+  <mat-card-title>
+    <ng-container *ngIf="lastName$ | async as lastName">Welcome Dr. {{ lastName }}</ng-container>
+  </mat-card-title>
+  <mat-card-content>
+    <p>Your dashboard is ready. Stats and metrics can be added here later.</p>
+  </mat-card-content>
+</mat-card>

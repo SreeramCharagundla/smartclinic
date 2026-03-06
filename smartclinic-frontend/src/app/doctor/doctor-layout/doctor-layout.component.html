@@ -1,0 +1,48 @@
+<mat-toolbar color="primary">
+  <span>SmartClinic | Doctor Portal</span>
+  <span class="spacer"></span>
+  <ng-container *ngIf="doctor$ | async as doctor">
+    <span class="doctor-name">Dr. {{ doctor.firstName }} {{ doctor.lastName }}</span>
+  </ng-container>
+  <button mat-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    Logout
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="layout-container">
+  <mat-sidenav
+    #sidenav
+    [mode]="isHandset ? 'over' : 'side'"
+    [opened]="!isHandset"
+  >
+    <mat-nav-list>
+      <a mat-list-item routerLink="/doctor/dashboard" routerLinkActive="active-link" (click)="closeIfHandset(sidenav, isHandset)">
+        <mat-icon matListItemIcon>dashboard</mat-icon>
+        <span matListItemTitle>Dashboard</span>
+      </a>
+      <a mat-list-item routerLink="/doctor/appointments" routerLinkActive="active-link" (click)="closeIfHandset(sidenav, isHandset)">
+        <mat-icon matListItemIcon>event</mat-icon>
+        <span matListItemTitle>Appointments</span>
+      </a>
+      <a mat-list-item routerLink="/doctor/patients" routerLinkActive="active-link" (click)="closeIfHandset(sidenav, isHandset)">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Patients</span>
+      </a>
+      <a mat-list-item routerLink="/doctor/profile" routerLinkActive="active-link" (click)="closeIfHandset(sidenav, isHandset)">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>Profile</span>
+      </a>
+      <button mat-list-item (click)="logout()">
+        <mat-icon matListItemIcon>logout</mat-icon>
+        <span matListItemTitle>Logout</span>
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

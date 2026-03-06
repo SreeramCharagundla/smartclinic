@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
 
     public static final String USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
     public static final String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
+    public static final String NOT_FOUND = "NOT_FOUND";
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyExists(UserAlreadyExistsException ex) {
@@ -42,6 +43,13 @@ public class GlobalExceptionHandler {
                 .details(details)
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
