@@ -5,11 +5,12 @@ import { MaterialModule } from '../../../shared/material/material.module';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NavbarComponent } from '../../../public/navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [MaterialModule, ReactiveFormsModule, NavbarComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })

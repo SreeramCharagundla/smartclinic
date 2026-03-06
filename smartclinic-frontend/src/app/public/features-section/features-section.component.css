@@ -1,0 +1,12 @@
+.features-section {
+  padding: 24px 16px;
+}
+
+.features-section h2 {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.feature-card {
+  height: 100%;
+}

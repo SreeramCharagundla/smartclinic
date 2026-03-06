@@ -12,6 +12,7 @@ import {
 import { UserRole } from '../../../core/models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NavbarComponent } from '../../../public/navbar/navbar.component';
 
 @Component({
   selector: 'app-signup',
@@ -19,6 +20,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   imports: [
     MaterialModule,
     ReactiveFormsModule,
+    NavbarComponent,
     PatientRegistrationFormComponent,
     DoctorRegistrationFormComponent,
   ],

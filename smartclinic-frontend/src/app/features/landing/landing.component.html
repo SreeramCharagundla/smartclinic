@@ -1,11 +1,76 @@
-<div class="landing-container">
-  <mat-card class="hero-card">
-    <mat-card-content>
-      <h1 class="hero-title">SmartClinic</h1>
-      <p class="hero-subtitle">Connecting Doctors and Patients Seamlessly</p>
-      <button mat-raised-button color="primary" routerLink="/signup">
-        Get Started
-      </button>
-    </mat-card-content>
-  </mat-card>
+<app-navbar />
+
+<div class="landing-page">
+  <section class="hero-container" id="home">
+    <div class="hero-text">
+      <h1>SmartClinic</h1>
+      <h2>Modern Digital Healthcare Platform</h2>
+      <p>
+        Manage appointments, medical records, prescriptions and vaccination
+        history in one secure place.
+      </p>
+      <div class="hero-actions">
+        <a mat-raised-button color="primary" routerLink="/signup">Book Appointment</a>
+        <a mat-button routerLink="/login">Login</a>
+      </div>
+    </div>
+
+    <div class="hero-media">
+      <img src="assets/media/heromedia.svg" alt="SmartClinic platform illustration" />
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <h3>Features</h3>
+    <div class="cards-grid">
+      <mat-card>
+        <mat-card-title>Appointment Management</mat-card-title>
+        <mat-card-content>Book, reschedule, and track visits easily.</mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Health Records</mat-card-title>
+        <mat-card-content>Access your history and reports in one place.</mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Pharmacy Finder</mat-card-title>
+        <mat-card-content>Locate nearby pharmacies and plan refills.</mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>AI Health Assistant</mat-card-title>
+        <mat-card-content>Get smart guidance for routine care steps.</mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <h3>How It Works</h3>
+    <div class="cards-grid steps-grid">
+      <mat-card>
+        <mat-card-title>Create Account</mat-card-title>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Book Appointments</mat-card-title>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Track Medical History</mat-card-title>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Get Insights</mat-card-title>
+      </mat-card>
+    </div>
+  </section>
+
+  <section class="section cta-section">
+    <h3>Start managing your healthcare digitally today</h3>
+    <a mat-raised-button color="primary" routerLink="/signup">Register Now</a>
+  </section>
+
+  <footer class="footer">
+    <span>© 2026 SmartClinic</span>
+    <div class="footer-links">
+      <a mat-button href="#">Privacy</a>
+      <a mat-button href="#">Terms</a>
+      <a mat-button href="#">Contact</a>
+    </div>
+  </footer>
 </div>

@@ -1,0 +1,26 @@
+.footer {
+  margin-top: 32px;
+}
+
+.footer-content {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-content p {
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  gap: 12px;
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit;
+}
