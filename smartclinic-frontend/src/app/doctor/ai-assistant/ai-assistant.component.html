@@ -1,0 +1,34 @@
+<button class="assistant-fab" mat-fab color="primary" (click)="toggleChat()" aria-label="Toggle Clinical AI Assistant">
+  <mat-icon>smart_toy</mat-icon>
+</button>
+
+<mat-card class="assistant-panel" *ngIf="isOpen">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>smart_toy</mat-icon>
+      Clinical AI Assistant
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="assistant-content">
+    <div #messagesContainer class="messages-area">
+      <mat-list>
+        <mat-list-item *ngFor="let message of messages" class="message-item" [class.doctor-item]="message.sender === 'doctor'" [class.ai-item]="message.sender === 'ai'">
+          <div class="message-bubble" [class.doctor-bubble]="message.sender === 'doctor'" [class.ai-bubble]="message.sender === 'ai'">
+            {{ message.text }}
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+    <div class="input-area">
+      <mat-form-field appearance="outline" class="input-field">
+        <mat-label>Type your message</mat-label>
+        <input matInput [formControl]="messageControl" (keydown.enter)="onEnter($event)" />
+      </mat-form-field>
+      <button mat-icon-button color="primary" (click)="sendMessage()" [disabled]="isResponding">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
