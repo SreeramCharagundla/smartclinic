@@ -20,11 +20,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private UserRepository userRepository;
-    private PatientService patientService;
-    private DoctorService doctorService;
-    private PasswordEncoder passwordEncoder;
-    private JwtService jwtService;
+    private final UserRepository userRepository;
+    private final PatientService patientService;
+    private final DoctorService doctorService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Transactional
     public AuthResponse registerPatient(RegisterPatientRequest request) {

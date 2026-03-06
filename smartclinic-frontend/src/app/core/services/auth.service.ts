@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { Patient } from '../models/patient.model';
 import { Doctor } from '../models/doctor.model';
-
-/** Payload for backend: users table (password sent as plaintext; backend hashes). */
-export interface RegisterUserPayload {
-  email: string;
-  password: string;
-  role: 'patient' | 'doctor';
-}
 
 /** Payload for backend: patients table. */
 export type RegisterPatientPayload = Omit<Patient, 'id' | 'user_id'>;
@@ -19,12 +13,27 @@ export type RegisterPatientPayload = Omit<Patient, 'id' | 'user_id'>;
 /** Payload for backend: doctors table. */
 export type RegisterDoctorPayload = Omit<Doctor, 'id' | 'user_id'>;
 
+interface ApiUser {
+  email: string;
+  role: string;
+}
+
+interface AuthResponse {
+  token: string;
+  user: ApiUser;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly TOKEN_KEY = 'smartclinic_token';
   private readonly USER_KEY = 'smartclinic_user';
+  private readonly API_BASE_URL = 'http://localhost:8080';
+  private readonly AUTH_URL = `${this.API_BASE_URL}/auth`;
 
-  constructor(private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   /**
    * Register a patient. Builds payload matching backend (User + Patient).
@@ -36,10 +45,9 @@ export class AuthService {
     patient: RegisterPatientPayload
   ): Observable<{ user: User; token: string }> {
     const payload = this.buildPatientRegistrationPayload(email, password, patient);
-    // TODO: POST to backend, then setSession from response
-    const user: User = { email: payload.user.email, role: 'patient' };
-    const token = 'placeholder-token';
-    return of({ user, token }).pipe(tap(() => this.setSession(token, user)));
+    return this.http
+      .post<AuthResponse>(`${this.AUTH_URL}/register/patient`, payload)
+      .pipe(this.toSessionResponse());
   }
 
   /**
@@ -52,10 +60,9 @@ export class AuthService {
     doctor: RegisterDoctorPayload
   ): Observable<{ user: User; token: string }> {
     const payload = this.buildDoctorRegistrationPayload(email, password, doctor);
-    // TODO: POST to backend, then setSession from response
-    const user: User = { email: payload.user.email, role: 'doctor' };
-    const token = 'placeholder-token';
-    return of({ user, token }).pipe(tap(() => this.setSession(token, user)));
+    return this.http
+      .post<AuthResponse>(`${this.AUTH_URL}/register/doctor`, payload)
+      .pipe(this.toSessionResponse());
   }
 
   /**
@@ -63,12 +70,9 @@ export class AuthService {
    * UI foundation only – no HTTP call yet.
    */
   login(email: string, password: string): Observable<{ user: User; token: string }> {
-    // TODO: POST to backend auth endpoint, then setSession from response
-    const user: User = { email, role: 'patient' };
-    const token = 'placeholder-token';
-    return of({ user, token }).pipe(
-      tap(({ user: u, token: t }) => this.setSession(t, u))
-    );
+    return this.http
+      .post<AuthResponse>(`${this.AUTH_URL}/login`, { email, password })
+      .pipe(this.toSessionResponse());
   }
 
   logout(): void {
@@ -100,22 +104,46 @@ export class AuthService {
     email: string,
     password: string,
     patient: RegisterPatientPayload
-  ): { user: RegisterUserPayload; patient: RegisterPatientPayload } {
+  ): { email: string; password: string; patient: RegisterPatientPayload } {
     return {
-      user: { email, password, role: 'patient' },
+      email,
+      password,
       patient: { ...patient },
     };
   }
 
-  /** Payload structure for backend: user + doctor. */
+  /** Payload structure for backend: doctor registration request. */
   private buildDoctorRegistrationPayload(
     email: string,
     password: string,
     doctor: RegisterDoctorPayload
-  ): { user: RegisterUserPayload; doctor: RegisterDoctorPayload } {
+  ): { email: string; password: string; doctor: RegisterDoctorPayload } {
     return {
-      user: { email, password, role: 'doctor' },
+      email,
+      password,
       doctor: { ...doctor },
     };
+  }
+
+  private toSessionResponse() {
+    return (source: Observable<AuthResponse>) =>
+      source.pipe(
+        map((response) => ({
+          token: response.token,
+          user: this.mapApiUser(response.user),
+        })),
+        tap(({ token, user }) => this.setSession(token, user))
+      );
+  }
+
+  private mapApiUser(apiUser: ApiUser): User {
+    return {
+      email: apiUser.email,
+      role: this.normalizeRole(apiUser.role),
+    };
+  }
+
+  private normalizeRole(role: string): 'patient' | 'doctor' {
+    return role?.toLowerCase() === 'doctor' ? 'doctor' : 'patient';
   }
 }

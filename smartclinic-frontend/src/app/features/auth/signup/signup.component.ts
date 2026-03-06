@@ -11,6 +11,7 @@ import {
 } from '../../../core/services/auth.service';
 import { UserRole } from '../../../core/models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -43,8 +44,8 @@ export class SignupComponent {
         this.snackBar.open('Registration successful', 'Close', { duration: 3000 });
         this.router.navigate(['/']);
       },
-      error: () => {
-        this.snackBar.open('Registration failed', 'Close', { duration: 3000 });
+      error: (error) => {
+        this.snackBar.open(this.getErrorMessage(error), 'Close', { duration: 3000 });
       },
     });
   }
@@ -59,9 +60,19 @@ export class SignupComponent {
         this.snackBar.open('Registration successful', 'Close', { duration: 3000 });
         this.router.navigate(['/']);
       },
-      error: () => {
-        this.snackBar.open('Registration failed', 'Close', { duration: 3000 });
+      error: (error) => {
+        this.snackBar.open(this.getErrorMessage(error), 'Close', { duration: 3000 });
       },
     });
+  }
+
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const backendMessage = error.error?.message;
+      if (typeof backendMessage === 'string' && backendMessage.trim()) {
+        return backendMessage;
+      }
+    }
+    return 'Registration failed. Please check your details and try again.';
   }
 }

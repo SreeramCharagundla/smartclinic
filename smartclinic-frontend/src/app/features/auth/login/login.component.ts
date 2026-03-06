@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MaterialModule } from '../../../shared/material/material.module';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -38,9 +39,19 @@ export class LoginComponent {
         this.snackBar.open('Login successful', 'Close', { duration: 3000 });
         this.router.navigate(['/']);
       },
-      error: () => {
-        this.snackBar.open('Invalid credentials', 'Close', { duration: 3000 });
+      error: (error) => {
+        this.snackBar.open(this.getErrorMessage(error), 'Close', { duration: 3000 });
       },
     });
+  }
+
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const backendMessage = error.error?.message;
+      if (typeof backendMessage === 'string' && backendMessage.trim()) {
+        return backendMessage;
+      }
+    }
+    return 'Invalid credentials';
   }
 }
