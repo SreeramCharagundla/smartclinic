@@ -4,9 +4,22 @@ SmartClinic is an AI-enabled clinical operations platform built for modern care 
 
 It brings doctor workflows, patient intelligence, and clinical decision support into one integrated system. The platform combines a high-performance Angular frontend, a layered Spring Boot backend, and PostgreSQL data persistence to deliver a unified doctor experience across appointments, longitudinal patient records, and AI-assisted clinical interpretation.
 
+## Table of Contents
+
+- [Platform Vision](#platform-vision)
+- [Core Capabilities](#core-capabilities)
+- [Technical Architecture](#technical-architecture)
+- [Repository Layout](#repository-layout)
+- [Domain Model Coverage](#domain-model-coverage)
+- [Backend API Surface](#backend-api-surface-doctor-portal)
+- [Local Setup](#local-setup)
+- [Strategic Direction](#strategic-direction)
+- [Author](#author)
+
 ## Platform Vision
 
 SmartClinic is designed to support the full clinical loop:
+
 - Acquire accurate patient and doctor records
 - Organize care interactions through structured appointments
 - Surface health signals through vitals, prescriptions, and vaccinations
@@ -22,6 +35,7 @@ The result is a system that is both operationally practical for day-to-day clini
 SmartClinic supports dedicated onboarding and login flows for both patients and doctors. The account model is structured around healthcare identity and role context, ensuring that portal experiences and APIs remain domain-specific.
 
 Capabilities include:
+
 - Patient registration with medical baseline fields
 - Doctor registration with specialty, license, and clinic details
 - Authenticated access to protected clinical features
@@ -31,6 +45,7 @@ Capabilities include:
 The Doctor Portal is implemented with Angular standalone architecture and Angular Material components, providing a clean and scalable UX foundation.
 
 Key portal capabilities:
+
 - Persistent top navigation and sidebar workspace
 - Fast route-based navigation between core doctor modules
 - Unified layout across dashboard, appointments, patient discovery, and profile management
@@ -41,6 +56,7 @@ Key portal capabilities:
 The dashboard provides an immediate entry point into doctor operations while preserving extensibility for future analytics and workload telemetry.
 
 Current workflow modules:
+
 - Dashboard
 - Appointments
 - Patient Search
@@ -52,6 +68,7 @@ Current workflow modules:
 SmartClinic supports doctor-centric appointment retrieval for current clinical schedules.
 
 Appointment capabilities:
+
 - Fetch today’s appointments for a doctor
 - Display patient context, visit reason, status, and time
 - Transition directly from appointment rows to patient clinical detail pages
@@ -63,6 +80,7 @@ This enables appointment-to-record continuity without context switching.
 Patient lookup is designed for speed and precision in real consultation settings.
 
 Capabilities:
+
 - Name-based patient search (first/last)
 - Low-friction autocomplete style retrieval
 - Immediate navigation to full patient profile from search result
@@ -72,6 +90,7 @@ Capabilities:
 Patient profile pages aggregate core identity and care history into a single clinical surface.
 
 Patient profile capabilities:
+
 - Demographics and contact details
 - Date of birth and derived age
 - Blood type and address context
@@ -87,6 +106,7 @@ This creates a compact but information-dense charting view suitable for follow-u
 SmartClinic includes an embedded Clinical AI Assistant directly inside the Doctor Portal.
 
 Assistant capabilities:
+
 - Floating, always-available doctor-side chat interface
 - Contextual question/answer flow for clinical support
 - Continuous session behavior while navigating doctor routes
@@ -124,6 +144,7 @@ smartclinic/
 ## Domain Model Coverage
 
 SmartClinic currently models the following healthcare entities:
+
 - Users
 - Doctors
 - Patients
@@ -167,6 +188,7 @@ These endpoints provide the core contract for doctor workflow orchestration from
 3. (Optional) Seed sample data: `insert_data.sql`
 
 Default backend DB config (in `smartclinic-backend/src/main/resources/application.properties`):
+
 - `spring.datasource.url=jdbc:postgresql://localhost:5432/medical_app`
 - `spring.datasource.username=admin`
 - `spring.datasource.password=admin`
@@ -193,6 +215,7 @@ Frontend: `http://localhost:4200`
 ## Strategic Direction
 
 SmartClinic is engineered as a clinical platform foundation rather than a narrow demo application. The architecture supports progression into:
+
 - Advanced Spring AI clinical reasoning pipelines
 - Provider-facing productivity copilots
 - Intelligent trend and risk interpretation
