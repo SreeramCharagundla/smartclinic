@@ -31,6 +31,16 @@ public class AppointmentService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<AppointmentDto> getUpcomingAppointmentsForPatient(UUID patientId) {
+        LocalDateTime now = LocalDateTime.now();
+        return appointmentRepository
+                .findByPatientIdAndAppointmentTimeGreaterThanEqualOrderByAppointmentTime(patientId, now)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
     private AppointmentDto toDto(Appointment appointment) {
         return new AppointmentDto(
                 appointment.getId(),

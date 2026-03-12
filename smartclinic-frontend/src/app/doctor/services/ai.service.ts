@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+interface AiChatRequest {
+  message: string;
+  patientId: string;
+}
+
+interface AiChatResponse {
+  message: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AiService {
-  sendMessage(message: string): Observable<string> {
-    const query = message.toLowerCase();
+  private readonly API_BASE_URL = 'http://localhost:8080';
 
-    if (query.includes('vitals')) {
-      return of('Vitals trend appears stable, with no major abnormal changes in recent records.').pipe(delay(500));
-    }
+  constructor(private http: HttpClient) {}
 
-    if (query.includes('patient') || query.includes('summarize')) {
-      return of('Patient summary: condition appears stable with ongoing follow-up recommended.').pipe(delay(500));
-    }
-
-    if (query.includes('appointment')) {
-      return of('You can review today\'s appointments in the Appointments section for timing and status.').pipe(delay(500));
-    }
-
-    return of('I can help summarize patient history, vitals, and visit context.').pipe(delay(500));
+  sendMessage(message: string, patientId: string): Observable<string> {
+    const payload: AiChatRequest = { message, patientId };
+    return this.http
+      .post<AiChatResponse>(`${this.API_BASE_URL}/api/ai/chat`, payload)
+      .pipe(map((response) => response.message));
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AiService } from '../services/ai.service';
 
 interface ChatMessage {
@@ -30,20 +33,38 @@ interface ChatMessage {
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css',
 })
-export class AiAssistantComponent implements AfterViewInit {
+export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('messagesContainer') messagesContainer?: ElementRef<HTMLDivElement>;
 
   isOpen = false;
   isResponding = false;
+  currentPatientId: string | null = null;
   readonly messageControl = new FormControl('', { nonNullable: true });
   readonly messages: ChatMessage[] = [
     { sender: 'ai', text: 'Hello doctor. How can I help?' },
   ];
 
-  constructor(private aiService: AiService) {}
+  private routeSubscription?: Subscription;
+
+  constructor(
+    private aiService: AiService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngAfterViewInit(): void {
     this.scrollToBottom();
+  }
+
+  ngOnInit(): void {
+    this.updateCurrentPatientId();
+    this.routeSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => this.updateCurrentPatientId());
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe();
   }
 
   toggleChat(): void {
@@ -64,10 +85,30 @@ export class AiAssistantComponent implements AfterViewInit {
     this.isResponding = true;
     this.scrollToBottom();
 
-    this.aiService.sendMessage(text).subscribe((reply) => {
-      this.messages.push({ sender: 'ai', text: reply });
+    if (!this.currentPatientId) {
+      this.messages.push({
+        sender: 'ai',
+        text: 'Open a patient profile to ask context-aware clinical questions.',
+      });
       this.isResponding = false;
       this.scrollToBottom();
+      return;
+    }
+
+    this.aiService.sendMessage(text, this.currentPatientId).subscribe({
+      next: (reply) => {
+        this.messages.push({ sender: 'ai', text: reply });
+        this.isResponding = false;
+        this.scrollToBottom();
+      },
+      error: () => {
+        this.messages.push({
+          sender: 'ai',
+          text: 'I could not fetch a response right now. Please try again.',
+        });
+        this.isResponding = false;
+        this.scrollToBottom();
+      },
     });
   }
 
@@ -83,5 +124,20 @@ export class AiAssistantComponent implements AfterViewInit {
         container.scrollTop = container.scrollHeight;
       }
     });
+  }
+
+  private updateCurrentPatientId(): void {
+    let route: ActivatedRoute | null = this.activatedRoute.root;
+
+    while (route) {
+      const patientId = route.snapshot.paramMap.get('patientId');
+      if (patientId) {
+        this.currentPatientId = patientId;
+        return;
+      }
+      route = route.firstChild;
+    }
+
+    this.currentPatientId = null;
   }
 }
