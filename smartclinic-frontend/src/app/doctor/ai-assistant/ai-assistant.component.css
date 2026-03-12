@@ -9,8 +9,8 @@
   position: fixed;
   right: 20px;
   bottom: 90px;
-  width: 350px;
-  height: 450px;
+  width: 450px;
+  height: 550px;
   display: flex;
   flex-direction: column;
   z-index: 1000;
