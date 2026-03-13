@@ -9,7 +9,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule } from '@angular/router';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
-import { AiAssistantComponent } from '../ai-assistant/ai-assistant.component';
 import { DoctorService } from '../services/doctor.service';
 
 @Component({
@@ -23,7 +22,6 @@ import { DoctorService } from '../services/doctor.service';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    AiAssistantComponent,
   ],
   templateUrl: './doctor-layout.component.html',
   styleUrl: './doctor-layout.component.css',

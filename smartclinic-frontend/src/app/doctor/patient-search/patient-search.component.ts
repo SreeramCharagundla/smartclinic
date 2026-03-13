@@ -4,9 +4,10 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
+import { AiAssistantComponent } from '../ai-assistant/ai-assistant.component';
 import { PatientSearchResult } from '../models/patient-search-result.model';
 import { PatientService } from '../services/patient.service';
 
@@ -19,6 +20,8 @@ import { PatientService } from '../services/patient.service';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    RouterOutlet,
+    AiAssistantComponent,
   ],
   templateUrl: './patient-search.component.html',
   styleUrl: './patient-search.component.css',

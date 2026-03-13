@@ -51,13 +51,15 @@ export const routes: Routes = [
           import('./doctor/patient-search/patient-search.component').then(
             (m) => m.PatientSearchComponent,
           ),
-      },
-      {
-        path: 'patients/:patientId',
-        loadComponent: () =>
-          import('./doctor/patient-profile/patient-profile.component').then(
-            (m) => m.PatientProfileComponent,
-          ),
+        children: [
+          {
+            path: ':patientId',
+            loadComponent: () =>
+              import('./doctor/patient-profile/patient-profile.component').then(
+                (m) => m.PatientProfileComponent,
+              ),
+          },
+        ],
       },
       {
         path: 'profile',

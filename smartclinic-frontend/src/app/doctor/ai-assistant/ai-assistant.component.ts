@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -26,18 +26,20 @@ interface ChatMessage {
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatListModule,
     MatInputModule,
     MatFormFieldModule,
+    MatSidenavModule,
   ],
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css',
 })
 export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('messagesContainer') messagesContainer?: ElementRef<HTMLDivElement>;
+  @Input() copilotWidth = '420px';
 
-  isOpen = false;
+  isCopilotOpen = false;
   isResponding = false;
+  isPatientContextActive = false;
   currentPatientId: string | null = null;
   readonly messageControl = new FormControl('', { nonNullable: true });
   readonly messages: ChatMessage[] = [
@@ -67,11 +69,19 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeSubscription?.unsubscribe();
   }
 
-  toggleChat(): void {
-    this.isOpen = !this.isOpen;
-    if (this.isOpen) {
+  toggleCopilot(): void {
+    if (!this.isPatientContextActive) {
+      return;
+    }
+
+    this.isCopilotOpen = !this.isCopilotOpen;
+    if (this.isCopilotOpen) {
       this.scrollToBottom();
     }
+  }
+
+  closeCopilot(): void {
+    this.isCopilotOpen = false;
   }
 
   sendMessage(): void {
@@ -133,11 +143,14 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
       const patientId = route.snapshot.paramMap.get('patientId');
       if (patientId) {
         this.currentPatientId = patientId;
+        this.isPatientContextActive = true;
         return;
       }
       route = route.firstChild;
     }
 
     this.currentPatientId = null;
+    this.isPatientContextActive = false;
+    this.isCopilotOpen = false;
   }
 }

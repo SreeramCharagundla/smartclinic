@@ -1,20 +1,24 @@
-<h1>Patients</h1>
+<app-ai-assistant [copilotWidth]="'460px'">
+  <h1>Patients</h1>
 
-<mat-form-field appearance="outline" class="search-field">
-  <mat-label>Search by first or last name</mat-label>
-  <input
-    matInput
-    [formControl]="searchControl"
-    [matAutocomplete]="auto"
-    placeholder="Type patient name"
-  />
-  <mat-autocomplete
-    #auto="matAutocomplete"
-    [displayWith]="displayPatientName"
-    (optionSelected)="onPatientSelected($event)"
-  >
-    <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient">
-      {{ patient.firstName }} {{ patient.lastName }}
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search by first or last name</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      [matAutocomplete]="auto"
+      placeholder="Type patient name"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      [displayWith]="displayPatientName"
+      (optionSelected)="onPatientSelected($event)"
+    >
+      <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient">
+        {{ patient.firstName }} {{ patient.lastName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <router-outlet></router-outlet>
+</app-ai-assistant>
