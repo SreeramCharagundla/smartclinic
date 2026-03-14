@@ -8,6 +8,7 @@ import { DoctorService } from '../services/doctor.service';
   standalone: true,
   imports: [CommonModule, MatCardModule],
   templateUrl: './doctor-profile.component.html',
+  styleUrl: './doctor-profile.component.css',
 })
 export class DoctorProfileComponent {
   readonly doctor$ = this.doctorService.getCurrentDoctor();

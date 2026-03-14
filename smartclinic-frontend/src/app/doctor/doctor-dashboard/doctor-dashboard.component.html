@@ -2,7 +2,90 @@
   <mat-card-title>
     <ng-container *ngIf="lastName$ | async as lastName">Welcome Dr. {{ lastName }}</ng-container>
   </mat-card-title>
-  <mat-card-content>
-    <p>Your dashboard is ready. Stats and metrics can be added here later.</p>
-  </mat-card-content>
 </mat-card>
+
+<mat-grid-list cols="2" rowHeight="420px" gutterSize="16px" class="dashboard-grid">
+  <mat-grid-tile>
+    <mat-card class="dashboard-card quick-actions-card">
+      <mat-card-title>Quick Actions</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-list>
+        <a mat-list-item routerLink="/doctor/patients">
+          <mat-icon matListItemIcon class="icon-soft-blue">search</mat-icon>
+          <span matListItemTitle>Search Patients</span>
+        </a>
+        <a mat-list-item routerLink="/doctor/patients">
+          <mat-icon matListItemIcon class="icon-soft-blue">folder_open</mat-icon>
+          <span matListItemTitle>View Patient Records</span>
+        </a>
+        <a mat-list-item routerLink="/doctor/patients">
+          <mat-icon matListItemIcon class="icon-soft-blue">smart_toy</mat-icon>
+          <span matListItemTitle>Open AI Copilot</span>
+        </a>
+        <a mat-list-item routerLink="/doctor/appointments">
+          <mat-icon matListItemIcon class="icon-soft-blue">event</mat-icon>
+          <span matListItemTitle>Go to Appointments</span>
+        </a>
+      </mat-list>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card class="dashboard-card copilot-card">
+      <mat-card-title>Clinical AI Copilot</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <p>You can ask questions like:</p>
+        <mat-list>
+          <mat-list-item>Summarize this patient</mat-list-item>
+          <mat-list-item>What allergies does this patient have?</mat-list-item>
+          <mat-list-item>Are there abnormal lab results?</mat-list-item>
+          <mat-list-item>What was discussed in the last visit?</mat-list-item>
+        </mat-list>
+        <p>Open any patient profile to start asking questions.</p>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card class="dashboard-card alerts-card">
+      <mat-card-title>Patient Alerts</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon class="icon-soft-amber">warning</mat-icon>
+          <span matListItemTitle>Severe peanut allergy recorded for John Doe</span>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListItemIcon class="icon-soft-amber">warning</mat-icon>
+          <span matListItemTitle>Cholesterol above reference range for Maria Garcia</span>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListItemIcon class="icon-soft-amber">warning</mat-icon>
+          <span matListItemTitle>Hypertension marked active for David Kim</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card class="dashboard-card status-card">
+      <mat-card-title>System Status</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon class="icon-soft-green">check_circle</mat-icon>
+          <span matListItemTitle>Patient records loaded</span>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListItemIcon class="icon-soft-green">check_circle</mat-icon>
+          <span matListItemTitle>AI Copilot active</span>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListItemIcon class="icon-soft-green">check_circle</mat-icon>
+          <span matListItemTitle>Clinical tools available</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

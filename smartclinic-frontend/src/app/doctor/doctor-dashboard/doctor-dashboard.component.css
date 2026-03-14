@@ -1,0 +1,37 @@
+.dashboard-grid {
+  margin-top: 16px;
+}
+
+.dashboard-card {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e7ebf0;
+}
+
+.quick-actions-card {
+  background: #f7fbff;
+}
+
+.copilot-card {
+  background: #f7f8ff;
+}
+
+.alerts-card {
+  background: #fffaf2;
+}
+
+.status-card {
+  background: #f6fcf8;
+}
+
+.icon-soft-blue {
+  color: #4f6fd9;
+}
+
+.icon-soft-amber {
+  color: #c9852f;
+}
+
+.icon-soft-green {
+  color: #2f8a5b;
+}

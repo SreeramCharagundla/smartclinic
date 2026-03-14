@@ -1,4 +1,4 @@
-<mat-card *ngIf="doctor$ | async as doctor">
+<mat-card class="profile-card" *ngIf="doctor$ | async as doctor">
   <mat-card-title>Doctor Profile</mat-card-title>
   <mat-card-content>
     <p>First Name: {{ doctor.firstName }}</p>

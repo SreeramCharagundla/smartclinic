@@ -23,13 +23,17 @@ export class AppointmentsComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private doctorService: DoctorService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.doctorService
       .getCurrentDoctor()
-      .pipe(switchMap((doctor) => this.appointmentService.getTodaysAppointments(doctor.id)))
+      .pipe(
+        switchMap((doctor) =>
+          this.appointmentService.getTodaysAppointments(doctor.id),
+        ),
+      )
       .subscribe((appointments) => {
         this.dataSource.data = appointments;
       });
@@ -40,6 +44,6 @@ export class AppointmentsComponent implements OnInit {
   }
 
   getStatusColor(status: AppointmentStatus): string {
-    return status.toUpperCase() === 'COMPLETED' ? '#2e7d32' : '#1565c0';
+    return status.toUpperCase() === 'COMPLETED' ? '#a5d6a7' : '#90caf9';
   }
 }
