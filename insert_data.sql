@@ -120,3 +120,44 @@
 -- ('3c4b9c7e-ba54-4cc8-b25a-4088740ca31f','2025-02-05',75,121,81,98.6,98,89.9,180),
 -- ('3c4b9c7e-ba54-4cc8-b25a-4088740ca31f','2025-02-25',78,124,84,98.8,97,90.2,180);
 
+--------------------------------------------------------------------------------------------------------
+
+-- new tables data in Sreeram
+
+INSERT INTO allergies (patient_id, allergen, reaction, severity, recorded_at)
+VALUES
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Penicillin','Skin rash','Moderate','2023-05-10'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Peanuts','Anaphylaxis','Severe','2021-08-15'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Dust','Sneezing and irritation','Mild','2022-02-11');
+
+INSERT INTO conditions (patient_id, condition_name, diagnosed_date, status, notes)
+VALUES
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Hypertension','2022-09-15','Active','Patient advised to monitor blood pressure regularly'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Seasonal Allergies','2021-04-10','Controlled','Symptoms worsen during spring season'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Vitamin D Deficiency','2023-01-20','Resolved','Vitamin supplements prescribed for 3 months');
+
+INSERT INTO lab_results (patient_id, test_name, result_value, unit, reference_range, result_date)
+VALUES
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Hemoglobin','13.8','g/dL','13.5 - 17.5','2025-01-10'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Cholesterol','215','mg/dL','<200','2025-01-10'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','HbA1c','6.2','%','4.0 - 5.6','2025-01-10'),
+('330b8319-c7b2-4d9c-b011-3bb68c323966','Vitamin D','28','ng/mL','30 - 100','2024-10-02');
+
+INSERT INTO visit_notes (patient_id, doctor_id, note, created_at)
+VALUES
+(
+'330b8319-c7b2-4d9c-b011-3bb68c323966',
+'dab4deb8-23a8-48aa-ba72-bd79f9573c09',
+'Patient complained of mild headaches and fatigue for the past week. Blood pressure slightly elevated. Recommended hydration, regular sleep, and follow-up monitoring.',
+'2025-01-10'
+),
+
+(
+'330b8319-c7b2-4d9c-b011-3bb68c323966',
+'dab4deb8-23a8-48aa-ba72-bd79f9573c09',
+'Routine follow-up visit. Vitals stable. Patient reports improved energy levels after vitamin supplementation.',
+'2025-02-20'
+);
+
+
+--------------------------------------------------------------------------------------------------------
