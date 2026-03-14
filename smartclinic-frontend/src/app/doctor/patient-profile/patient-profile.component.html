@@ -103,6 +103,98 @@
     <tr mat-header-row *matHeaderRowDef="vaccinationColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: vaccinationColumns"></tr>
   </table>
+
+  <h2>Allergies</h2>
+  <table mat-table [dataSource]="allergiesDataSource" class="full-width-table">
+    <ng-container matColumnDef="allergen">
+      <th mat-header-cell *matHeaderCellDef>Allergen</th>
+      <td mat-cell *matCellDef="let row">{{ row.allergen }}</td>
+    </ng-container>
+    <ng-container matColumnDef="reaction">
+      <th mat-header-cell *matHeaderCellDef>Reaction</th>
+      <td mat-cell *matCellDef="let row">{{ row.reaction }}</td>
+    </ng-container>
+    <ng-container matColumnDef="severity">
+      <th mat-header-cell *matHeaderCellDef>Severity</th>
+      <td mat-cell *matCellDef="let row">{{ row.severity }}</td>
+    </ng-container>
+    <ng-container matColumnDef="recordedAt">
+      <th mat-header-cell *matHeaderCellDef>Recorded At</th>
+      <td mat-cell *matCellDef="let row">{{ row.recordedAt }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="allergyColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: allergyColumns"></tr>
+  </table>
+
+  <h2>Conditions</h2>
+  <table mat-table [dataSource]="conditionsDataSource" class="full-width-table">
+    <ng-container matColumnDef="conditionName">
+      <th mat-header-cell *matHeaderCellDef>Condition</th>
+      <td mat-cell *matCellDef="let row">{{ row.conditionName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="diagnosedDate">
+      <th mat-header-cell *matHeaderCellDef>Diagnosed Date</th>
+      <td mat-cell *matCellDef="let row">{{ row.diagnosedDate }}</td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">{{ row.status }}</td>
+    </ng-container>
+    <ng-container matColumnDef="notes">
+      <th mat-header-cell *matHeaderCellDef>Notes</th>
+      <td mat-cell *matCellDef="let row">{{ row.notes }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="conditionColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: conditionColumns"></tr>
+  </table>
+
+  <h2>Lab Results</h2>
+  <table mat-table [dataSource]="labResultsDataSource" class="full-width-table">
+    <ng-container matColumnDef="testName">
+      <th mat-header-cell *matHeaderCellDef>Test Name</th>
+      <td mat-cell *matCellDef="let row">{{ row.testName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="resultValue">
+      <th mat-header-cell *matHeaderCellDef>Result</th>
+      <td mat-cell *matCellDef="let row">{{ row.resultValue }}</td>
+    </ng-container>
+    <ng-container matColumnDef="unit">
+      <th mat-header-cell *matHeaderCellDef>Unit</th>
+      <td mat-cell *matCellDef="let row">{{ row.unit }}</td>
+    </ng-container>
+    <ng-container matColumnDef="referenceRange">
+      <th mat-header-cell *matHeaderCellDef>Reference Range</th>
+      <td mat-cell *matCellDef="let row">{{ row.referenceRange }}</td>
+    </ng-container>
+    <ng-container matColumnDef="resultDate">
+      <th mat-header-cell *matHeaderCellDef>Result Date</th>
+      <td mat-cell *matCellDef="let row">{{ row.resultDate }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="labResultColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: labResultColumns"></tr>
+  </table>
+
+  <h2>Visit Notes</h2>
+  <table mat-table [dataSource]="visitNotesDataSource" class="full-width-table">
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef>Created At</th>
+      <td mat-cell *matCellDef="let row">{{ row.createdAt }}</td>
+    </ng-container>
+    <ng-container matColumnDef="doctor">
+      <th mat-header-cell *matHeaderCellDef>Doctor</th>
+      <td mat-cell *matCellDef="let row">{{ row.doctorId }}</td>
+    </ng-container>
+    <ng-container matColumnDef="note">
+      <th mat-header-cell *matHeaderCellDef>Note</th>
+      <td mat-cell *matCellDef="let row">{{ row.note }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="visitNoteColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: visitNoteColumns"></tr>
+  </table>
 </ng-container>
 
 <ng-template #notFound>

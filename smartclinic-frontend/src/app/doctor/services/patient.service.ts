@@ -4,10 +4,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PatientSearchResult } from '../models/patient-search-result.model';
 import {
+  Allergy,
+  Condition,
+  LabResult,
   PatientProfile,
   Prescription,
   Vaccination,
   Vital,
+  VisitNote,
 } from '../models/patient-profile.model';
 
 interface ApiPrescription {
@@ -36,6 +40,38 @@ interface ApiVaccination {
   doseNumber: number;
   administeredDate: string;
   provider: string;
+}
+
+interface ApiAllergy {
+  id: string;
+  allergen: string;
+  reaction: string;
+  severity: string;
+  recordedAt: string;
+}
+
+interface ApiCondition {
+  id: string;
+  conditionName: string;
+  diagnosedDate: string;
+  status: string;
+  notes: string;
+}
+
+interface ApiLabResult {
+  id: string;
+  testName: string;
+  resultValue: string;
+  unit: string;
+  referenceRange: string;
+  resultDate: string;
+}
+
+interface ApiVisitNote {
+  id: string;
+  doctorId: string;
+  note: string;
+  createdAt: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -99,6 +135,68 @@ export class PatientService {
             doseNumber: row.doseNumber,
             date: row.administeredDate,
             provider: row.provider,
+          }))
+        )
+      );
+  }
+
+  getPatientAllergies(patientId: string): Observable<Allergy[]> {
+    return this.http.get<ApiAllergy[]>(`${this.API_BASE_URL}/patients/${patientId}/allergies`).pipe(
+      map((rows) =>
+        rows.map((row) => ({
+          id: row.id,
+          allergen: row.allergen,
+          reaction: row.reaction,
+          severity: row.severity,
+          recordedAt: row.recordedAt,
+        }))
+      )
+    );
+  }
+
+  getPatientConditions(patientId: string): Observable<Condition[]> {
+    return this.http
+      .get<ApiCondition[]>(`${this.API_BASE_URL}/patients/${patientId}/conditions`)
+      .pipe(
+        map((rows) =>
+          rows.map((row) => ({
+            id: row.id,
+            conditionName: row.conditionName,
+            diagnosedDate: row.diagnosedDate,
+            status: row.status,
+            notes: row.notes,
+          }))
+        )
+      );
+  }
+
+  getPatientLabResults(patientId: string): Observable<LabResult[]> {
+    return this.http
+      .get<ApiLabResult[]>(`${this.API_BASE_URL}/patients/${patientId}/lab-results`)
+      .pipe(
+        map((rows) =>
+          rows.map((row) => ({
+            id: row.id,
+            testName: row.testName,
+            resultValue: row.resultValue,
+            unit: row.unit,
+            referenceRange: row.referenceRange,
+            resultDate: row.resultDate,
+          }))
+        )
+      );
+  }
+
+  getPatientVisitNotes(patientId: string): Observable<VisitNote[]> {
+    return this.http
+      .get<ApiVisitNote[]>(`${this.API_BASE_URL}/patients/${patientId}/visit-notes`)
+      .pipe(
+        map((rows) =>
+          rows.map((row) => ({
+            id: row.id,
+            doctorId: row.doctorId,
+            note: row.note,
+            createdAt: row.createdAt,
           }))
         )
       );

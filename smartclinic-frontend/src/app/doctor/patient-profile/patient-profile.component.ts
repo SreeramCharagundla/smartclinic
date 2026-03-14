@@ -6,10 +6,14 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
+  Allergy,
+  Condition,
+  LabResult,
   PatientProfile,
   Prescription,
   Vaccination,
   Vital,
+  VisitNote,
 } from '../models/patient-profile.model';
 import { PatientService } from '../services/patient.service';
 
@@ -42,10 +46,18 @@ export class PatientProfileComponent implements OnInit {
     'height',
   ];
   readonly vaccinationColumns = ['vaccine', 'doseNumber', 'date', 'provider'];
+  readonly allergyColumns = ['allergen', 'reaction', 'severity', 'recordedAt'];
+  readonly conditionColumns = ['conditionName', 'diagnosedDate', 'status', 'notes'];
+  readonly labResultColumns = ['testName', 'resultValue', 'unit', 'referenceRange', 'resultDate'];
+  readonly visitNoteColumns = ['createdAt', 'doctor', 'note'];
 
   readonly prescriptionsDataSource = new MatTableDataSource<Prescription>([]);
   readonly vitalsDataSource = new MatTableDataSource<Vital>([]);
   readonly vaccinationsDataSource = new MatTableDataSource<Vaccination>([]);
+  readonly allergiesDataSource = new MatTableDataSource<Allergy>([]);
+  readonly conditionsDataSource = new MatTableDataSource<Condition>([]);
+  readonly labResultsDataSource = new MatTableDataSource<LabResult>([]);
+  readonly visitNotesDataSource = new MatTableDataSource<VisitNote>([]);
 
   constructor(
     private route: ActivatedRoute,
@@ -80,6 +92,18 @@ export class PatientProfileComponent implements OnInit {
         this.patientService
           .getPatientVaccinations(patientId)
           .subscribe((vaccinations) => (this.vaccinationsDataSource.data = vaccinations));
+        this.patientService
+          .getPatientAllergies(patientId)
+          .subscribe((allergies) => (this.allergiesDataSource.data = allergies));
+        this.patientService
+          .getPatientConditions(patientId)
+          .subscribe((conditions) => (this.conditionsDataSource.data = conditions));
+        this.patientService
+          .getPatientLabResults(patientId)
+          .subscribe((labResults) => (this.labResultsDataSource.data = labResults));
+        this.patientService
+          .getPatientVisitNotes(patientId)
+          .subscribe((visitNotes) => (this.visitNotesDataSource.data = visitNotes));
       });
   }
 

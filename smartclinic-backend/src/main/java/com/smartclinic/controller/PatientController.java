@@ -39,4 +39,24 @@ public class PatientController {
     public List<VaccinationDto> getVaccinations(@PathVariable UUID patientId) {
         return patientService.getPatientVaccinations(patientId);
     }
+
+    @GetMapping("/{patientId}/allergies")
+    public List<AllergyDto> getAllergies(@PathVariable UUID patientId) {
+        return patientService.getPatientAllergies(patientId);
+    }
+
+    @GetMapping("/{patientId}/conditions")
+    public List<ConditionDto> getConditions(@PathVariable UUID patientId) {
+        return patientService.getPatientConditions(patientId);
+    }
+
+    @GetMapping("/{patientId}/lab-results")
+    public List<LabResultDto> getLabResults(@PathVariable UUID patientId) {
+        return patientService.getPatientLabResults(patientId);
+    }
+
+    @GetMapping("/{patientId}/visit-notes")
+    public List<VisitNoteDto> getVisitNotes(@PathVariable UUID patientId) {
+        return patientService.getPatientVisitNotes(patientId);
+    }
 }

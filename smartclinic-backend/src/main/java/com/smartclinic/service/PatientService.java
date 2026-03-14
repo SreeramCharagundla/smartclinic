@@ -1,15 +1,23 @@
 package com.smartclinic.service;
 
 import com.smartclinic.dto.*;
+import com.smartclinic.entity.Allergy;
+import com.smartclinic.entity.Condition;
+import com.smartclinic.entity.LabResult;
 import com.smartclinic.entity.Patient;
 import com.smartclinic.entity.Prescription;
 import com.smartclinic.entity.Vaccination;
 import com.smartclinic.entity.Vital;
+import com.smartclinic.entity.VisitNote;
 import com.smartclinic.exception.ResourceNotFoundException;
+import com.smartclinic.repository.AllergyRepository;
+import com.smartclinic.repository.ConditionRepository;
+import com.smartclinic.repository.LabResultRepository;
 import com.smartclinic.repository.PatientRepository;
 import com.smartclinic.repository.PrescriptionRepository;
 import com.smartclinic.repository.VaccinationRepository;
 import com.smartclinic.repository.VitalRepository;
+import com.smartclinic.repository.VisitNoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +34,10 @@ public class PatientService {
     private final PrescriptionRepository prescriptionRepository;
     private final VitalRepository vitalRepository;
     private final VaccinationRepository vaccinationRepository;
+    private final AllergyRepository allergyRepository;
+    private final ConditionRepository conditionRepository;
+    private final LabResultRepository labResultRepository;
+    private final VisitNoteRepository visitNoteRepository;
 
     @Transactional
     public Patient createPatient(UUID userId, RegisterPatientRequest.PatientData data) {
@@ -88,6 +100,38 @@ public class PatientService {
                 .orElse(null);
     }
 
+    @Transactional(readOnly = true)
+    public List<AllergyDto> getPatientAllergies(UUID patientId) {
+        ensurePatientExists(patientId);
+        return allergyRepository.findByPatientIdOrderByRecordedAtDesc(patientId).stream()
+                .map(this::toAllergyDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ConditionDto> getPatientConditions(UUID patientId) {
+        ensurePatientExists(patientId);
+        return conditionRepository.findByPatientIdOrderByDiagnosedDateDesc(patientId).stream()
+                .map(this::toConditionDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<LabResultDto> getPatientLabResults(UUID patientId) {
+        ensurePatientExists(patientId);
+        return labResultRepository.findByPatientIdOrderByResultDateDesc(patientId).stream()
+                .map(this::toLabResultDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<VisitNoteDto> getPatientVisitNotes(UUID patientId) {
+        ensurePatientExists(patientId);
+        return visitNoteRepository.findByPatientIdOrderByCreatedAtDesc(patientId).stream()
+                .map(this::toVisitNoteDto)
+                .toList();
+    }
+
     private void ensurePatientExists(UUID patientId) {
         if (!patientRepository.existsById(patientId)) {
             throw new ResourceNotFoundException("Patient not found: " + patientId);
@@ -142,6 +186,46 @@ public class PatientService {
                 vaccination.getDoseNumber(),
                 vaccination.getAdministeredDate(),
                 vaccination.getProvider()
+        );
+    }
+
+    private AllergyDto toAllergyDto(Allergy allergy) {
+        return new AllergyDto(
+                allergy.getId(),
+                allergy.getAllergen(),
+                allergy.getReaction(),
+                allergy.getSeverity(),
+                allergy.getRecordedAt()
+        );
+    }
+
+    private ConditionDto toConditionDto(Condition condition) {
+        return new ConditionDto(
+                condition.getId(),
+                condition.getConditionName(),
+                condition.getDiagnosedDate(),
+                condition.getStatus(),
+                condition.getNotes()
+        );
+    }
+
+    private LabResultDto toLabResultDto(LabResult labResult) {
+        return new LabResultDto(
+                labResult.getId(),
+                labResult.getTestName(),
+                labResult.getResultValue(),
+                labResult.getUnit(),
+                labResult.getReferenceRange(),
+                labResult.getResultDate()
+        );
+    }
+
+    private VisitNoteDto toVisitNoteDto(VisitNote visitNote) {
+        return new VisitNoteDto(
+                visitNote.getId(),
+                visitNote.getDoctor().getId(),
+                visitNote.getNote(),
+                visitNote.getCreatedAt()
         );
     }
 

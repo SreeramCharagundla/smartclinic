@@ -35,3 +35,35 @@ export interface Vaccination {
   date: string;
   provider: string;
 }
+
+export interface Allergy {
+  id: string;
+  allergen: string;
+  reaction: string;
+  severity: string;
+  recordedAt: string;
+}
+
+export interface Condition {
+  id: string;
+  conditionName: string;
+  diagnosedDate: string;
+  status: string;
+  notes: string;
+}
+
+export interface LabResult {
+  id: string;
+  testName: string;
+  resultValue: string;
+  unit: string;
+  referenceRange: string;
+  resultDate: string;
+}
+
+export interface VisitNote {
+  id: string;
+  doctorId: string;
+  note: string;
+  createdAt: string;
+}

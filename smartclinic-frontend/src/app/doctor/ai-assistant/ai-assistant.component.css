@@ -1,11 +1,11 @@
 .copilot-container {
+  height: calc(100vh - 100px);
   min-height: 520px;
-  /* height: calc(100vh - 170px); */
-  height: 100%;
 }
 
 .copilot-drawer {
   padding: 8px;
+  overflow: hidden;
 }
 
 .copilot-card {
@@ -32,6 +32,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding-top: 8px;
 }
 
 .input-field {
@@ -66,8 +70,18 @@
   border-radius: 24px 0 0 24px;
 }
 
+:host ::ng-deep .copilot-container .mat-drawer-content {
+  height: 100%;
+  overflow: auto;
+}
+
+:host ::ng-deep .copilot-container .mat-drawer-inner-container {
+  height: 100%;
+}
+
 @media (max-width: 960px) {
   .copilot-container {
-    height: calc(100vh - 150px);
+    height: calc(100vh - 84px);
+    min-height: 460px;
   }
 }
