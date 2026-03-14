@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface VaccinationRepository extends JpaRepository<Vaccination, UUID> {
 
     List<Vaccination> findByPatientId(UUID patientId);
+
+    List<Vaccination> findByPatientIdOrderByAdministeredDateDesc(UUID patientId);
 }

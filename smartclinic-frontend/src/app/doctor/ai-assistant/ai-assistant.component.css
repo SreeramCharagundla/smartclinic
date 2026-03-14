@@ -1,6 +1,7 @@
 .copilot-container {
   min-height: 520px;
-  height: calc(100vh - 170px);
+  /* height: calc(100vh - 170px); */
+  height: 100%;
 }
 
 .copilot-drawer {

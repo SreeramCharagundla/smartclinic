@@ -3,6 +3,7 @@ package com.smartclinic.ai;
 import com.smartclinic.dto.AppointmentDto;
 import com.smartclinic.dto.PatientProfileDto;
 import com.smartclinic.dto.PrescriptionDto;
+import com.smartclinic.dto.VaccinationDto;
 import com.smartclinic.dto.VitalDto;
 import com.smartclinic.service.AppointmentService;
 import com.smartclinic.service.PatientService;
@@ -43,5 +44,17 @@ public class AiPatientTools {
     public List<AppointmentDto> getUpcomingAppointments() {
         UUID patientId = patientContextHolder.getPatientIdOrThrow();
         return appointmentService.getUpcomingAppointmentsForPatient(patientId);
+    }
+
+    @Tool(description = "Get the patient's vaccination history")
+    public List<VaccinationDto> getPatientVaccinations() {
+        UUID patientId = patientContextHolder.getPatientIdOrThrow();
+        return patientService.getPatientVaccinations(patientId);
+    }
+
+    @Tool(description = "Get the patient's most recent vital signs")
+    public VitalDto getLatestVitals() {
+        UUID patientId = patientContextHolder.getPatientIdOrThrow();
+        return patientService.getLatestVitals(patientId);
     }
 }

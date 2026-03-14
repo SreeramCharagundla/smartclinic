@@ -75,9 +75,17 @@ public class PatientService {
     @Transactional(readOnly = true)
     public List<VaccinationDto> getPatientVaccinations(UUID patientId) {
         ensurePatientExists(patientId);
-        return vaccinationRepository.findByPatientId(patientId).stream()
+        return vaccinationRepository.findByPatientIdOrderByAdministeredDateDesc(patientId).stream()
                 .map(this::toVaccinationDto)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public VitalDto getLatestVitals(UUID patientId) {
+        ensurePatientExists(patientId);
+        return vitalRepository.findTopByPatientIdOrderByRecordedAtDesc(patientId)
+                .map(this::toVitalDto)
+                .orElse(null);
     }
 
     private void ensurePatientExists(UUID patientId) {

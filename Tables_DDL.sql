@@ -114,3 +114,48 @@ CREATE TABLE doctor_patients (
     FOREIGN KEY (doctor_id) REFERENCES doctors(id),
     FOREIGN KEY (patient_id) REFERENCES patients(id)
 );commit;
+
+CREATE TABLE allergies (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    patient_id UUID,
+    allergen VARCHAR(255),
+    reaction VARCHAR(255),
+    severity VARCHAR(50),
+    recorded_at DATE,
+
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+);commit;
+
+CREATE TABLE conditions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    patient_id UUID,
+    condition_name VARCHAR(255),
+    diagnosed_date DATE,
+    status VARCHAR(50),
+    notes TEXT,
+
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+);commit;
+
+CREATE TABLE lab_results (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    patient_id UUID,
+    test_name VARCHAR(255),
+    result_value VARCHAR(100),
+    unit VARCHAR(50),
+    result_date DATE,
+    reference_range VARCHAR(100),
+
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+);commit;
+
+CREATE TABLE visit_notes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    patient_id UUID,
+    doctor_id UUID,
+    note TEXT,
+    created_at TIMESTAMP,
+
+    FOREIGN KEY (patient_id) REFERENCES patients(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctors(id)
+);commit;
