@@ -1,4 +1,4 @@
-<app-ai-assistant [copilotWidth]="'460px'">
+<app-ai-assistant [copilotWidth]="460">
   <h1>Patients</h1>
 
   <mat-form-field appearance="outline" class="search-field">
@@ -14,7 +14,10 @@
       [displayWith]="displayPatientName"
       (optionSelected)="onPatientSelected($event)"
     >
-      <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient">
+      <mat-option
+        *ngFor="let patient of filteredPatients$ | async"
+        [value]="patient"
+      >
         {{ patient.firstName }} {{ patient.lastName }}
       </mat-option>
     </mat-autocomplete>

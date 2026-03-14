@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -36,8 +44,9 @@ interface ChatMessage {
   styleUrl: './ai-assistant.component.css',
 })
 export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('messagesContainer') messagesContainer?: ElementRef<HTMLDivElement>;
-  @Input() copilotWidth = '420px';
+  @ViewChild('messagesContainer')
+  messagesContainer?: ElementRef<HTMLDivElement>;
+  @Input() copilotWidth = 420;
 
   isCopilotOpen = false;
   isResponding = false;
@@ -47,13 +56,14 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly messages: ChatMessage[] = [
     { sender: 'ai', text: 'Hello doctor. How can I help?' },
   ];
+  private resizing = false;
 
   private routeSubscription?: Subscription;
 
   constructor(
     private aiService: AiService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngAfterViewInit(): void {
@@ -155,4 +165,29 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isPatientContextActive = false;
     this.isCopilotOpen = false;
   }
+
+  startResize(event: MouseEvent): void {
+    this.resizing = true;
+
+    document.addEventListener('mousemove', this.resizePanel);
+    document.addEventListener('mouseup', this.stopResize);
+  }
+
+  resizePanel = (event: MouseEvent) => {
+    if (!this.resizing) return;
+
+    const newWidth = window.innerWidth - event.clientX;
+
+    const minWidth = 280;
+    const maxWidth = 700;
+
+    this.copilotWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+  };
+
+  stopResize = () => {
+    this.resizing = false;
+
+    document.removeEventListener('mousemove', this.resizePanel);
+    document.removeEventListener('mouseup', this.stopResize);
+  };
 }

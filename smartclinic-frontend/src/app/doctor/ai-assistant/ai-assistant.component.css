@@ -99,3 +99,17 @@
     min-height: 460px;
   }
 }
+
+.resize-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  background: transparent;
+}
+
+.resize-handle:hover {
+  background: rgba(0, 0, 0, 0.08);
+}

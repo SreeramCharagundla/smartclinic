@@ -7,7 +7,7 @@
   (click)="toggleCopilot()"
   aria-label="Toggle AI Copilot"
 >
-  <mat-icon>{{ isCopilotOpen ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+  <mat-icon>{{ isCopilotOpen ? "chevron_right" : "chevron_left" }}</mat-icon>
 </button>
 
 <mat-drawer-container class="copilot-container" [autosize]="true">
@@ -20,16 +20,23 @@
     position="end"
     mode="side"
     [opened]="isCopilotOpen"
-    [style.width]="copilotWidth"
+    [style.width.px]="copilotWidth"
     class="copilot-drawer"
   >
+    <div class="resize-handle" (mousedown)="startResize($event)"></div>
+
     <mat-card class="copilot-card">
       <mat-card-header>
         <mat-card-title>
           <mat-icon>psychology</mat-icon>
           Clinical AI Copilot
         </mat-card-title>
-        <button mat-icon-button type="button" (click)="closeCopilot()" aria-label="Close AI Copilot">
+        <button
+          mat-icon-button
+          type="button"
+          (click)="closeCopilot()"
+          aria-label="Close AI Copilot"
+        >
           <mat-icon>chevron_right</mat-icon>
         </button>
       </mat-card-header>
@@ -47,7 +54,9 @@
               [class.ai-bubble]="message.sender === 'ai'"
               [class.doctor-bubble]="message.sender === 'doctor'"
             >
-              <strong>{{ message.sender === 'doctor' ? 'You' : 'Copilot' }}:</strong>
+              <strong
+                >{{ message.sender === "doctor" ? "You" : "Copilot" }}:</strong
+              >
               <ng-container *ngIf="message.sender === 'ai'; else doctorText">
                 <markdown [data]="message.text"></markdown>
               </ng-container>
@@ -59,9 +68,19 @@
         <div class="input-area">
           <mat-form-field appearance="outline" class="input-field">
             <mat-label>Type your message</mat-label>
-            <input matInput [formControl]="messageControl" (keydown.enter)="onEnter($event)" />
+            <input
+              matInput
+              [formControl]="messageControl"
+              (keydown.enter)="onEnter($event)"
+            />
           </mat-form-field>
-          <button mat-icon-button color="primary" type="button" (click)="sendMessage()" [disabled]="isResponding">
+          <button
+            mat-icon-button
+            color="primary"
+            type="button"
+            (click)="sendMessage()"
+            [disabled]="isResponding"
+          >
             <mat-icon>send</mat-icon>
           </button>
         </div>
