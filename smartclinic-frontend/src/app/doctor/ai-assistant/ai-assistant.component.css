@@ -59,6 +59,20 @@
   max-width: 100%;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.ai-bubble {
+  background: #eef6ff;
+}
+
+.doctor-bubble {
+  background: #f4f4f4;
+}
+
+:host ::ng-deep .message-bubble markdown p {
+  margin: 6px 0 0;
 }
 
 .copilot-handle {

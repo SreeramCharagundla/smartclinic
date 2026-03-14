@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MarkdownModule } from 'ngx-markdown';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AiService } from '../services/ai.service';
@@ -29,6 +30,7 @@ interface ChatMessage {
     MatInputModule,
     MatFormFieldModule,
     MatSidenavModule,
+    MarkdownModule,
   ],
   templateUrl: './ai-assistant.component.html',
   styleUrl: './ai-assistant.component.css',

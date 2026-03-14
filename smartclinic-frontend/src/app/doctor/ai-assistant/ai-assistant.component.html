@@ -42,9 +42,16 @@
             [class.doctor-row]="message.sender === 'doctor'"
             [class.ai-row]="message.sender === 'ai'"
           >
-            <div class="message-bubble">
+            <div
+              class="message-bubble"
+              [class.ai-bubble]="message.sender === 'ai'"
+              [class.doctor-bubble]="message.sender === 'doctor'"
+            >
               <strong>{{ message.sender === 'doctor' ? 'You' : 'Copilot' }}:</strong>
-              {{ message.text }}
+              <ng-container *ngIf="message.sender === 'ai'; else doctorText">
+                <markdown [data]="message.text"></markdown>
+              </ng-container>
+              <ng-template #doctorText>{{ message.text }}</ng-template>
             </div>
           </div>
         </div>
