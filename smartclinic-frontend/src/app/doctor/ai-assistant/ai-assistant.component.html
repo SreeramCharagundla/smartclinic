@@ -43,24 +43,33 @@
 
       <mat-card-content class="assistant-content">
         <div #messagesContainer class="messages-area">
+          <div *ngIf="getVoiceStatusLabel()" class="voice-status-row">
+            <mat-chip
+              [color]="voiceStatus === 'AI_SPEAKING' ? 'accent' : 'primary'"
+              highlighted
+            >
+              {{ getVoiceStatusLabel() }}
+            </mat-chip>
+          </div>
+
           <div
             *ngFor="let message of messages"
             class="message-row"
-            [class.doctor-row]="message.sender === 'doctor'"
-            [class.ai-row]="message.sender === 'ai'"
+            [class.doctor-row]="message.role === 'user'"
+            [class.ai-row]="message.role === 'assistant'"
           >
             <div
               class="message-bubble"
-              [class.ai-bubble]="message.sender === 'ai'"
-              [class.doctor-bubble]="message.sender === 'doctor'"
+              [class.ai-bubble]="message.role === 'assistant'"
+              [class.doctor-bubble]="message.role === 'user'"
             >
               <strong
-                >{{ message.sender === "doctor" ? "You" : "Copilot" }}:</strong
+                >{{ message.role === "user" ? "Doctor" : "AI" }}:</strong
               >
-              <ng-container *ngIf="message.sender === 'ai'; else doctorText">
-                <markdown [data]="message.text"></markdown>
+              <ng-container *ngIf="message.role === 'assistant'; else doctorText">
+                <markdown [data]="message.content"></markdown>
               </ng-container>
-              <ng-template #doctorText>{{ message.text }}</ng-template>
+              <ng-template #doctorText>{{ message.content }}</ng-template>
             </div>
           </div>
         </div>
@@ -76,10 +85,26 @@
           </mat-form-field>
           <button
             mat-icon-button
+            type="button"
+            (click)="toggleMic()"
+            [color]="isMicActive || voiceStatus === 'AI_SPEAKING' ? 'accent' : undefined"
+            [disabled]="!isPatientContextActive"
+            [attr.aria-label]="isMicActive ? 'Stop voice input' : 'Start voice input'"
+          >
+            <mat-icon>
+              {{
+                isMicActive || voiceStatus === 'AI_SPEAKING'
+                  ? 'mic'
+                  : 'mic_off'
+              }}
+            </mat-icon>
+          </button>
+          <button
+            mat-icon-button
             color="primary"
             type="button"
             (click)="sendMessage()"
-            [disabled]="isResponding"
+            [disabled]="isResponding || isMicActive"
           >
             <mat-icon>send</mat-icon>
           </button>

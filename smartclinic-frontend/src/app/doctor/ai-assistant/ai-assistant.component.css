@@ -28,6 +28,12 @@
   overflow-y: auto;
 }
 
+.voice-status-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
 .input-area {
   display: flex;
   align-items: center;
@@ -69,6 +75,10 @@
 
 .doctor-bubble {
   background: #f4f4f4;
+}
+
+:host ::ng-deep .voice-status-row .mdc-evolution-chip {
+  font-weight: 600;
 }
 
 :host ::ng-deep .message-bubble markdown p {

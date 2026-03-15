@@ -11,6 +11,7 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -19,12 +20,12 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { ChatMessage } from '../models/chat-message';
 import { AiService } from '../services/ai.service';
-
-interface ChatMessage {
-  sender: 'doctor' | 'ai';
-  text: string;
-}
+import {
+  VoiceAgentService,
+  VoiceStatus,
+} from '../services/voice-agent.service';
 
 @Component({
   selector: 'app-ai-assistant',
@@ -33,6 +34,7 @@ interface ChatMessage {
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatChipsModule,
     MatIconModule,
     MatCardModule,
     MatInputModule,
@@ -50,18 +52,23 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isCopilotOpen = false;
   isResponding = false;
+  isMicActive = false;
   isPatientContextActive = false;
   currentPatientId: string | null = null;
+  voiceStatus: VoiceStatus = 'IDLE';
   readonly messageControl = new FormControl('', { nonNullable: true });
   readonly messages: ChatMessage[] = [
-    { sender: 'ai', text: 'Hello doctor. How can I help?' },
+    { role: 'assistant', content: 'Hello doctor. How can I help?' },
   ];
   private resizing = false;
 
   private routeSubscription?: Subscription;
+  private voiceStatusSubscription?: Subscription;
+  private voiceTranscriptSubscription?: Subscription;
 
   constructor(
     private aiService: AiService,
+    private voiceAgentService: VoiceAgentService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {}
@@ -75,10 +82,26 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routeSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => this.updateCurrentPatientId());
+    this.voiceStatusSubscription = this.voiceAgentService.status$.subscribe(
+      (status) => {
+        this.voiceStatus = status;
+        if (status !== 'LISTENING') {
+          this.isMicActive = false;
+        }
+      },
+    );
+    this.voiceTranscriptSubscription =
+      this.voiceAgentService.transcript$.subscribe(({ message }) => {
+        this.messages.push(message);
+        this.scrollToBottom();
+      });
   }
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
+    this.voiceStatusSubscription?.unsubscribe();
+    this.voiceTranscriptSubscription?.unsubscribe();
+    this.voiceAgentService.disconnect();
   }
 
   toggleCopilot(): void {
@@ -102,15 +125,15 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.messages.push({ sender: 'doctor', text });
+    this.messages.push({ role: 'user', content: text });
     this.messageControl.setValue('');
     this.isResponding = true;
     this.scrollToBottom();
 
     if (!this.currentPatientId) {
       this.messages.push({
-        sender: 'ai',
-        text: 'Open a patient profile to ask context-aware clinical questions.',
+        role: 'assistant',
+        content: 'Open a patient profile to ask context-aware clinical questions.',
       });
       this.isResponding = false;
       this.scrollToBottom();
@@ -119,14 +142,14 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.aiService.sendMessage(text, this.currentPatientId).subscribe({
       next: (reply) => {
-        this.messages.push({ sender: 'ai', text: reply });
+        this.messages.push({ role: 'assistant', content: reply });
         this.isResponding = false;
         this.scrollToBottom();
       },
       error: () => {
         this.messages.push({
-          sender: 'ai',
-          text: 'I could not fetch a response right now. Please try again.',
+          role: 'assistant',
+          content: 'I could not fetch a response right now. Please try again.',
         });
         this.isResponding = false;
         this.scrollToBottom();
@@ -137,6 +160,52 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
   onEnter(event: Event): void {
     event.preventDefault();
     this.sendMessage();
+  }
+
+  async toggleMic(): Promise<void> {
+    if (!this.isPatientContextActive) {
+      return;
+    }
+
+    try {
+      if (this.voiceStatus === 'AI_SPEAKING') {
+        await this.voiceAgentService.interrupt();
+        await this.voiceAgentService.startListening();
+        this.isMicActive = true;
+        return;
+      }
+
+      if (this.isMicActive) {
+        this.voiceAgentService.stopListening();
+        this.isMicActive = false;
+        return;
+      }
+
+      await this.voiceAgentService.startListening();
+      this.isMicActive = true;
+    } catch {
+      this.isMicActive = false;
+      this.voiceStatus = 'IDLE';
+      this.messages.push({
+        role: 'assistant',
+        content:
+          'Voice mode is unavailable right now. Check microphone permissions and the voice agent connection.',
+      });
+      this.scrollToBottom();
+    }
+  }
+
+  getVoiceStatusLabel(): string | null {
+    switch (this.voiceStatus) {
+      case 'LISTENING':
+        return 'Listening...';
+      case 'TRANSCRIBING':
+        return 'Transcribing...';
+      case 'AI_SPEAKING':
+        return 'AI Speaking...';
+      default:
+        return null;
+    }
   }
 
   private scrollToBottom(): void {
@@ -164,6 +233,8 @@ export class AiAssistantComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentPatientId = null;
     this.isPatientContextActive = false;
     this.isCopilotOpen = false;
+    this.isMicActive = false;
+    this.voiceAgentService.disconnect();
   }
 
   startResize(event: MouseEvent): void {
